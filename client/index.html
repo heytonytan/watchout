@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel='stylesheet' type='css' href='styles.css'>
+    <link rel='stylesheet' type='text/css' href='styles.css'>
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
   </head>
   <body>
     <div class="scoreboard">
+      <div class="title"> Crap, Looks like We're in an Asteroid Game! </div>
       <!-- Modify the scoreboard when important events occur in your game! -->
-      <div class="highscore">High score: <span>0</span></div>
-      <div class="current">Current score: <span>0</span></div>
-      <div class="collisions">Collisions: <span>0</span></div>
+      <ul class="score">
+        <li class="highscore">High score: <span>0</span></li>
+        <li class="current">Current score: <span>0</span></li>
+        <li class="collisions">Collisions: <span>0</span></li>
+      </ul>
     </div>
     <div class="board"><div class="mouse"></div></div>
     <script src="lib/d3.js" charset="utf-8"></script>
