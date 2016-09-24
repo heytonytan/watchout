@@ -10,39 +10,44 @@ var collisions = 0;
 var score = 0;
 var highScore = 0;
 
+
+//COLORED SVG SHADOW
 var defs = svg.append('defs');
 
-// create filter with id #drop-shadow
-// height=130% so that the shadow is not clipped
+
 var filter = defs.append('filter')
     .attr('id', 'drop-shadow')
-    .attr('height', '130%');
+    .attr('height', '150%');
 
-// SourceAlpha refers to opacity of graphic that this filter will be applied to
-// convolve that with a Gaussian with standard deviation 3 and store result
-// in blur
 filter.append('feGaussianBlur')
     .attr('in', 'SourceAlpha')
-    .attr('stdDeviation', 5)
+    .attr('stdDeviation', 6)
     .attr('result', 'blur');
 
-// translate output of Gaussian blur to the right and downwards with 2px
-// store result in offsetBlur
+filter.append('feFlood')
+  .attr('flood-color', '#fe7800')
+  .attr('flood-opacity', 1)
+  .attr('result', 'offsetColor');
+
 filter.append('feOffset')
     .attr('in', 'blur')
     .attr('dx', 0)
-    .attr('dy', 5)
+    .attr('dy', 6)
     .attr('result', 'offsetBlur');
 
-// overlay original SourceGraphic over translated blurred opacity by using
-// feMerge filter. Order of specifying inputs is important!
+filter.append('feComposite')
+  .attr('in', 'offsetColor')
+  .attr('in2', 'offsetBlur')
+  .attr('operator', 'in')
+  .attr('result', 'offsetBlur');
+
 var feMerge = filter.append('feMerge');
+
 
 feMerge.append('feMergeNode')
     .attr('in', 'offsetBlur');
 feMerge.append('feMergeNode')
     .attr('in', 'SourceGraphic');
-
 
 var drag = d3.behavior.drag()
     .on('drag', function(d, i) {
@@ -97,8 +102,16 @@ class Boss extends Enemy {
     this.duration = 350;
   }
   go() {
-    this.x = playerLocation[0];
-    this.y = playerLocation[1];
+    var x1 = this.x;
+    var x2 = playerLocation[0];
+    var y1 = this.y;
+    var y2 = playerLocation[1];
+    var xx = x2 - x1;
+    var yy = y2 - y1;
+    var m = yy / xx;
+    var c = y1 - m * x1;
+    this.x = xx > 0 ? x1 + xx + 150 : x1 + xx - 150;
+    this.y = yy > 0 ? y1 + yy + 150 : y1 + yy - 150;
   }
 }
 
@@ -248,7 +261,7 @@ var updateBoss = function(enemies) {
 
 var enemies = [];
 var minibosses = [];
-var bosses = [new Boss(0)];
+var bosses = [];
 var bossId = 0;
 var minibossId = 0;
 var minibossCount = 0;
@@ -266,8 +279,13 @@ setInterval(() => {
 
 setInterval(() => {
   if (score > 600) {
+    if (bosses.length === 0) {
+      bosses.push(new Boss(bossId));
+    }
     updateBoss(bosses);
+    bossId++;
   } else {
+    bosses = [];
     updateBoss([]);
   }
   if (score > 300) {
