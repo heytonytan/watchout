@@ -9,12 +9,12 @@
       <div class="title"> Crap, Looks like We're in an Asteroid Game! </div>
       <!-- Modify the scoreboard when important events occur in your game! -->
       <ul class="score">
-        <li class="highscore">High score: <span>0</span></li>
-        <li class="current">Current score: <span>0</span></li>
-        <li class="collisions">Collisions: <span>0</span></li>
+        <li>High score: <span id="highscore">0</span></li>
+        <li>Current score: <span id="current">0</span></li>
+        <li>Collisions: <span id="collisions">0</span></li>
       </ul>
     </div>
-    <div class="board"><div class="mouse"></div></div>
+    <svg class="board" width="1700" height="800"><div class="mouse"></div></svg>
     <script src="lib/d3.js" charset="utf-8"></script>
     <script src='watchout.js'></script>
   </body>
